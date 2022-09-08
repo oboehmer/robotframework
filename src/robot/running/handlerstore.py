@@ -68,7 +68,20 @@ class HandlerStore:
         embedded = [template for template in self._embedded if template.matches(name)]
         if len(embedded) == 1:
             return embedded[0]
+        for candidate in embedded:
+            if self._is_best_embedded_match(candidate, embedded):
+                return candidate
         self._raise_no_single_match(name, embedded)
+
+    def _is_best_embedded_match(self, candidate, alternatives):
+        # Match is considered better than another match if it doesn't match
+        # the other but the other matches it.
+        for other in alternatives:
+            if candidate is other:
+                continue
+            if other.matches(candidate.name) or not candidate.matches(other.name):
+                return False
+        return True
 
     def _raise_no_single_match(self, name, found):
         if self.source_type == self.TEST_CASE_FILE_TYPE:
