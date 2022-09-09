@@ -79,7 +79,7 @@ class HandlerStore:
         for other in alternatives:
             if candidate is other:
                 continue
-            if other.matches(candidate.name) or not candidate.matches(other.name):
+            if candidate.matches(other.name) or not other.matches(candidate.name):
                 return False
         return True
 
