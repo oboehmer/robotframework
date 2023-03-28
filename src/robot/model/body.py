@@ -66,8 +66,8 @@ class BodyItem(ModelObject):
                          if step.type != self.MESSAGE)
         if getattr(parent, 'has_teardown', False):
             steps.append(parent.teardown)
-        my_id = steps.index(self) + 1
-        return f'{parent.id}-k{my_id}'
+        index = steps.index(self) if self in steps else len(steps)
+        return f'{parent.id}-k{index + 1}'
 
     def to_dict(self):
         raise NotImplementedError
